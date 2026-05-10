@@ -15,7 +15,7 @@ Bu Gizlilik Politikası, Margino mobil uygulamasını ("Uygulama") ve ilgili hiz
 
 **Cemal Yılmaz** (Türkiye Cumhuriyeti'nde tescilli şahıs işletmesi).
 
-İletişim: [cemal.yilmaz@grupanya.com](mailto:cemal.yilmaz@grupanya.com)
+İletişim: [cemalyilmazsmmm@gmail.com](mailto:cemalyilmazsmmm@gmail.com)
 
 ## 2. Toplanan Kişisel Veriler
 
@@ -80,7 +80,7 @@ Kişisel verilerinizle ilgili aşağıdaki haklara sahipsiniz:
 8. Otomatik sistemlerle analiz edilerek aleyhinize sonuç çıktığında itiraz etme
 9. Zarar halinde tazminat talep etme
 
-Başvurularınızı [cemal.yilmaz@grupanya.com](mailto:cemal.yilmaz@grupanya.com) adresine iletebilirsiniz. KVKK m.13 kapsamında talebiniz en geç 30 gün içinde sonuçlandırılır.
+Başvurularınızı [cemalyilmazsmmm@gmail.com](mailto:cemalyilmazsmmm@gmail.com) adresine iletebilirsiniz. KVKK m.13 kapsamında talebiniz en geç 30 gün içinde sonuçlandırılır.
 
 ## 7. Çocukların Verileri
 
@@ -101,4 +101,4 @@ Bu politikayı güncellediğimizde "Son güncelleme" tarihi değişir ve uygulam
 
 Veri sorumlusu Cemal Yılmaz'a aşağıdaki kanaldan ulaşabilirsiniz:
 
-📧 [cemal.yilmaz@grupanya.com](mailto:cemal.yilmaz@grupanya.com)
+📧 [cemalyilmazsmmm@gmail.com](mailto:cemalyilmazsmmm@gmail.com)

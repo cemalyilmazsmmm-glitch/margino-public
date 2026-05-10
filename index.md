@@ -20,5 +20,5 @@ Margino is a one-tap receipt logger for small business owners. Snap a photo, the
 
 ## Contact / İletişim
 
-- Email: [cemal.yilmaz@grupanya.com](mailto:cemal.yilmaz@grupanya.com)
+- Email: [cemalyilmazsmmm@gmail.com](mailto:cemalyilmazsmmm@gmail.com)
 - Source code (private): [github.com/cemalyilmazsmmm-glitch/margino](https://github.com/cemalyilmazsmmm-glitch/margino)

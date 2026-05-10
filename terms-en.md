@@ -93,7 +93,7 @@ These Terms are governed by the laws of the **Republic of Türkiye**. Any disput
 
 For questions about these Terms or Margino:
 
-- **Email:** [cemal.yilmaz@grupanya.com](mailto:cemal.yilmaz@grupanya.com)
+- **Email:** [cemalyilmazsmmm@gmail.com](mailto:cemalyilmazsmmm@gmail.com) (support@margino.us when domain is live)
 - **Developer:** Cemal Yılmaz (sole proprietor, Istanbul, Türkiye)
 
 ---
