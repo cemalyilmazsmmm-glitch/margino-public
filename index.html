@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Margino — Know what to charge on DoorDash, UberEats & in-store</title>
+<meta name="description" content="Snap a supplier receipt. Margino logs every cost to your own Google Sheet and tells you the price that protects your margin on DoorDash, UberEats, and in-store.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Margino — Smart Profit for food merchants">
+<meta property="og:description" content="Snap a receipt. Get the price that protects your margin on every delivery platform.">
+<meta property="og:image" content="assets/sheet-prices.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --navy:#1B2A4A; --navy-2:#27396B; --navy-soft:#EDF0F7;
+    --gold:#C9A227; --gold-soft:#F7EFD4;
+    --ink:#1B2230; --muted:#5A6478; --line:#E4E8F0; --bg:#F7F8FB; --white:#fff;
+    --radius:18px; --maxw:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;border-radius:999px;padding:14px 26px;transition:.15s ease;cursor:pointer;border:0;font-size:16px}
+  .btn-primary{background:var(--navy);color:#fff}
+  .btn-primary:hover{background:var(--navy-2);transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--navy)}
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:20;background:rgba(247,248,251,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--navy)}
+  .brand img{width:30px;height:30px;border-radius:8px}
+  nav .btn{padding:10px 20px;font-size:15px}
+
+  /* HERO */
+  .hero{padding:72px 0 56px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{font-size:46px;line-height:1.08;font-weight:800;letter-spacing:-.02em;color:var(--navy);margin:16px 0}
+  .hero h1 .hl{color:var(--gold)}
+  .hero p.lead{font-size:19px;color:var(--muted);max-width:520px;margin-bottom:28px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .free-note{font-size:14px;color:var(--muted);margin-top:16px}
+  .free-note b{color:var(--ink)}
+  .hero-visual{background:linear-gradient(135deg,var(--navy),var(--navy-2));border-radius:24px;padding:28px;box-shadow:0 24px 60px -20px rgba(27,42,74,.45)}
+  .hero-visual img{width:100%;border-radius:12px;display:block;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+  .hero-visual .cap{color:#fff;font-size:14px;margin-top:14px;opacity:.85;text-align:center}
+  .hero-visual .cap b{color:var(--gold)}
+
+  /* SECTIONS */
+  section.block{padding:64px 0}
+  .sec-head{text-align:center;max-width:660px;margin:0 auto 44px}
+  .sec-head h2{font-size:34px;font-weight:800;letter-spacing:-.02em;color:var(--navy);margin:10px 0}
+  .sec-head p{color:var(--muted);font-size:18px}
+
+  /* PROBLEM */
+  .problem{background:var(--navy);color:#fff}
+  .problem .sec-head h2{color:#fff}
+  .problem .sec-head p{color:#C3CBDE}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
+  .stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:28px 24px;text-align:center}
+  .stat .num{font-size:38px;font-weight:800;color:var(--gold);letter-spacing:-.02em}
+  .stat .lbl{color:#C3CBDE;font-size:15px;margin-top:6px}
+
+  /* STEPS */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+  .step .ph{background:var(--navy-soft);padding:22px 22px 0;text-align:center}
+  .step .ph img{width:100%;max-width:230px;border-radius:14px 14px 0 0;display:block;margin:0 auto;box-shadow:0 -2px 18px rgba(27,42,74,.10)}
+  .step .body{padding:22px 24px 26px}
+  .step .n{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--gold-soft);color:var(--gold);font-weight:700;align-items:center;justify-content:center;font-size:15px;margin-bottom:10px}
+  .step h3{font-size:19px;color:var(--navy);margin-bottom:6px}
+  .step p{color:var(--muted);font-size:15px}
+
+  /* FEATURES */
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .feat{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .feat .ic{font-size:24px;margin-bottom:12px}
+  .feat h3{font-size:17px;color:var(--navy);margin-bottom:6px}
+  .feat p{color:var(--muted);font-size:15px}
+
+  /* PRICING */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+  .plan{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;display:flex;flex-direction:column}
+  .plan.feature{border:2px solid var(--gold);box-shadow:0 16px 40px -18px rgba(201,162,39,.5);position:relative}
+  .plan .tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;letter-spacing:.04em}
+  .plan h3{font-size:18px;color:var(--navy)}
+  .plan .price{font-size:38px;font-weight:800;color:var(--navy);margin:12px 0 2px;letter-spacing:-.02em}
+  .plan .price span{font-size:16px;font-weight:500;color:var(--muted)}
+  .plan .yr{font-size:14px;color:var(--muted);margin-bottom:18px}
+  .plan ul{list-style:none;margin:0 0 22px;flex:1}
+  .plan li{font-size:15px;color:var(--ink);padding:7px 0 7px 26px;position:relative}
+  .plan li:before{content:"✓";position:absolute;left:0;color:var(--gold);font-weight:700}
+  .plan .btn{width:100%;justify-content:center}
+  .price-foot{text-align:center;color:var(--muted);font-size:14px;margin-top:22px}
+
+  /* FAQ */
+  .faq{max-width:780px;margin:0 auto}
+  details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+  details summary{font-weight:600;color:var(--navy);cursor:pointer;list-style:none;font-size:16px;display:flex;justify-content:space-between}
+  details summary::-webkit-details-marker{display:none}
+  details summary:after{content:"+";color:var(--gold);font-weight:700}
+  details[open] summary:after{content:"–"}
+  details p{color:var(--muted);font-size:15px;margin-top:12px}
+
+  /* CTA BAND */
+  .cta-band{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;text-align:center;border-radius:24px;padding:56px 32px;margin:64px 0}
+  .cta-band h2{font-size:32px;font-weight:800;margin-bottom:12px}
+  .cta-band p{color:#C3CBDE;font-size:18px;margin-bottom:26px}
+  .cta-band .btn-primary{background:var(--gold);color:var(--navy)}
+  .cta-band .btn-primary:hover{background:#d8b43a}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line);padding:40px 0;color:var(--muted);font-size:14px}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center}
+  footer .links{display:flex;gap:20px;flex-wrap:wrap}
+  footer a:hover{color:var(--navy)}
+
+  @media(max-width:860px){
+    .hero-grid{grid-template-columns:1fr;gap:32px}
+    .hero h1{font-size:36px}
+    .steps,.feat-grid,.price-grid,.stat-row{grid-template-columns:1fr}
+    .hero{padding:48px 0 36px}
+    section.block{padding:48px 0}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="/margino-public/"><img src="assets/logo.png" alt="Margino logo">Margino</a>
+    <a class="btn btn-primary" href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">Get the app</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Smart Profit for food merchants</span>
+      <h1>Know exactly what to charge on <span class="hl">DoorDash, UberEats &amp; in-store.</span></h1>
+      <p class="lead">Snap a photo of your supplier receipt. Margino reads every line item into your own Google Sheet — then tells you the price that protects your margin on each platform.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">Download on the App Store</a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="free-note">Start free — <b>10 receipts a month, no card required.</b></p>
+    </div>
+    <div class="hero-visual">
+      <img src="assets/sheet-prices.jpeg" alt="Margino suggested prices: In-Store, UberEats, DoorDash">
+      <div class="cap">Your costs in → <b>profit-safe prices out</b>, per platform.</div>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEM -->
+<section class="block problem">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">The DoorDash math problem</span>
+      <h2>Delivery platforms eat your margin — most owners price on gut.</h2>
+      <p>Marketplace commissions run 15–30% per order. Supplier costs creep up week to week. If you're not re-pricing every item, you're quietly losing money on orders you think are profitable.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="num">15–30%</div><div class="lbl">taken per delivery order in platform fees</div></div>
+      <div class="stat"><div class="num">Every week</div><div class="lbl">supplier prices shift — your menu prices don't</div></div>
+      <div class="stat"><div class="num">1 photo</div><div class="lbl">is all Margino needs to do the math for you</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Receipt to profit-safe pricing in one tap.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="ph"><img src="assets/capture.jpeg" alt="Snap a receipt screen"></div>
+        <div class="body"><span class="n">1</span><h3>Snap the receipt</h3><p>Photograph any supplier invoice or retail receipt. No typing, no spreadsheets to build.</p></div>
+      </div>
+      <div class="step">
+        <div class="ph"><img src="assets/receipt-detail.jpeg" alt="Parsed receipt line items"></div>
+        <div class="body"><span class="n">2</span><h3>Margino reads every line</h3><p>Each item, unit cost, and supplier is parsed automatically — and shown to you for a quick check.</p></div>
+      </div>
+      <div class="step">
+        <div class="ph"><img src="assets/sheet.jpeg" alt="Costs in a Google Sheet with platform prices"></div>
+        <div class="body"><span class="n">3</span><h3>Lands in your Google Sheet</h3><p>Costs sync to a Sheet you own, with suggested In-Store, UberEats &amp; DoorDash prices that hold your margin.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why Margino</span>
+      <h2>Built for the way food merchants actually run.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat"><div class="ic">📄</div><h3>One-tap capture</h3><p>Snap supplier invoices or store receipts — Margino does the data entry.</p></div>
+      <div class="feat"><div class="ic">📊</div><h3>Your own Google Sheet</h3><p>Data lives in a Sheet you control. No lock-in, export anytime, share with your accountant.</p></div>
+      <div class="feat"><div class="ic">💸</div><h3>Per-platform pricing</h3><p>Suggested in-store, UberEats &amp; DoorDash prices that protect your target margin.</p></div>
+      <div class="feat"><div class="ic">🚩</div><h3>Cost-hike alerts</h3><p>Flags items priced above regional benchmarks so you catch creeping costs early.</p></div>
+      <div class="feat"><div class="ic">🔒</div><h3>Private by design</h3><p>Sign in with Apple. Margino only touches the Sheet it creates — nothing else in your Drive.</p></div>
+      <div class="feat"><div class="ic">⚡</div><h3>Made for one device</h3><p>Fast, lightweight iPhone app — built for the counter, not a back-office PC.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Pricing</span>
+      <h2>Start free. Upgrade when it pays for itself.</h2>
+      <p>Every plan writes to your own Google Sheet. Cancel anytime in the App Store.</p>
+    </div>
+    <div class="price-grid">
+      <div class="plan">
+        <h3>Starter</h3>
+        <div class="price">$29.99<span>/mo</span></div>
+        <div class="yr">or $249/year</div>
+        <ul><li>For a single location</li><li>Receipt capture to your Sheet</li><li>Platform price suggestions</li><li>Cost-hike alerts</li></ul>
+        <a class="btn btn-ghost" href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">Get started</a>
+      </div>
+      <div class="plan feature">
+        <span class="tag">MOST POPULAR</span>
+        <h3>Growth</h3>
+        <div class="price">$49.99<span>/mo</span></div>
+        <div class="yr">or $419/year</div>
+        <ul><li>Higher monthly receipt volume</li><li>Everything in Starter</li><li>For busy kitchens &amp; growing menus</li><li>Priority parsing</li></ul>
+        <a class="btn btn-primary" href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">Get started</a>
+      </div>
+      <div class="plan">
+        <h3>Business</h3>
+        <div class="price">$99.99<span>/mo</span></div>
+        <div class="yr">or $799/year</div>
+        <ul><li>Highest receipt volume</li><li>Everything in Growth</li><li>For multi-supplier operations</li><li>Best per-receipt value</li></ul>
+        <a class="btn btn-ghost" href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">Get started</a>
+      </div>
+    </div>
+    <p class="price-foot">Free plan includes 10 receipts per month — no card required. Prices shown in USD; see the App Store for current pricing in your region.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions, answered.</h2></div>
+    <div class="faq">
+      <details><summary>Where does my data go?</summary><p>Into a Google Sheet that you own. Margino creates the Sheet on your Drive and writes your parsed receipts there. You can open, edit, export, or delete it anytime — and Margino only ever touches the file it created.</p></details>
+      <details><summary>How are the platform prices calculated?</summary><p>Margino starts from your real unit cost and works up to a price that holds your target margin after typical delivery-platform commissions, so your in-store, UberEats, and DoorDash prices each stay profitable.</p></details>
+      <details><summary>Do I need to type anything?</summary><p>No. Snap a photo of the receipt or invoice and Margino reads the line items for you. You get a quick review screen to confirm before it syncs.</p></details>
+      <details><summary>What does it cost to start?</summary><p>It's free to start — 10 receipts a month, no credit card. Upgrade in-app when you need more volume.</p></details>
+      <details><summary>Which devices are supported?</summary><p>Margino is an iPhone app, available now on the App Store in 175 countries.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="wrap">
+  <div class="cta-band">
+    <h2>Stop guessing your margins.</h2>
+    <p>Snap your next supplier receipt and see your profit-safe prices in seconds.</p>
+    <a class="btn btn-primary" href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">Download Margino — free</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div>© 2026 Margino · Cemal Yılmaz</div>
+    <div class="links">
+      <a href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">App Store</a>
+      <a href="privacy-en.html">Privacy</a>
+      <a href="privacy-tr.html">Gizlilik (TR)</a>
+      <a href="terms-en.html">Terms</a>
+      <a href="account-deletion.html">Data deletion</a>
+      <a href="mailto:cemalyilmazsmmm@gmail.com">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
