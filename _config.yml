@@ -5,6 +5,7 @@ url: "https://cemalyilmazsmmm-glitch.github.io"
 baseurl: "/margino-public"
 markdown: kramdown
 permalink: /blog/:title/
+future: true
 
 plugins:
   - jekyll-feed
