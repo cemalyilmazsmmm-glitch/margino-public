@@ -1,0 +1,26 @@
+---
+layout: page
+title: Stories from the counter
+description: Real-world margin stories from bodegas, delis, and food merchants — and how to price for profit on delivery platforms.
+permalink: /blog/
+---
+<section class="blog-hero">
+  <div class="wrap narrow">
+    <span class="eyebrow">Margino Blog</span>
+    <h1>Stories from the counter</h1>
+    <p>Bodegas, delis, and food merchants — how real owners find the price that actually protects their margin.</p>
+  </div>
+</section>
+
+<div class="wrap narrow">
+  <div class="post-list">
+    {% for post in site.posts %}
+    <a class="post-card" href="{{ post.url | relative_url }}">
+      <div class="meta">{{ post.category | default: "Margino Stories" }} · {{ post.date | date: "%b %-d, %Y" }}</div>
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.description | default: post.excerpt | strip_html | truncate: 160 }}</p>
+      <span class="more">Read the story →</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>

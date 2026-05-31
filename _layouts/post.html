@@ -1,0 +1,20 @@
+---
+layout: page
+---
+<article class="article">
+  <div class="wrap narrow">
+    <div class="kicker"><span class="eyebrow">{{ page.category | default: "Margino Stories" }}</span></div>
+    <h1>{{ page.title }}</h1>
+    <div class="byline">{% if page.author %}By <b>{{ page.author }}</b> · {% endif %}{{ page.date | date: "%B %-d, %Y" }}</div>
+    <div class="prose">
+      {{ content }}
+    </div>
+
+    <div class="post-cta">
+      <h3>Know your real margin on every order.</h3>
+      <p>Snap a supplier receipt — Margino logs the cost to your own Google Sheet and prices it for profit on DoorDash, UberEats &amp; in-store.</p>
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/margino-smart-profit/id6767698556">Download Margino — free</a>
+    </div>
+    <a class="backlink" href="{{ '/blog/' | relative_url }}">← Back to all stories</a>
+  </div>
+</article>

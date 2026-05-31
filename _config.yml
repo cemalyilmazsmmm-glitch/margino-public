@@ -4,6 +4,10 @@ theme: jekyll-theme-minimal
 url: "https://cemalyilmazsmmm-glitch.github.io"
 baseurl: "/margino-public"
 markdown: kramdown
+permalink: /blog/:title/
+
+plugins:
+  - jekyll-feed
 
 # Author shown by minima theme footer
 author:
